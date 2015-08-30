@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+</head>
+<body>
+	<div class='main'>
+		<h1>Edit Thesis</h1>
+		<form id='formThesis' action='/thesis/edit/{{thesis.key.id()}}' method='post'>
+            <label> Year
+                <select name='year' form='formThesis'>
+                    <option value="2011">2011</option>
+                    <option value="2012">2012</option>
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                    <option selected value="{{thesis.year}}">{{thesis.year}}</option>
+                </select>
+            </label>
+            <label><br><br>Title <input type='text' name='thesisTitle' value='{{thesis.thesisTitle}}' required/></label>
+
+        	<label>Abstract <textarea type='text 'name='abstract' rows="10" cols="54"  required> {{thesis.abstract}} </textarea></label>
+        	<label>Adviser <input type='text' name='adviser' value='{{thesis.adviser}}' required/></label>
+            <label> Section
+                <select name='section' form='formThesis'>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option selected value="{{thesis.section}}">{{thesis.section}}</option>
+                </select>
+            </label>
+            <input type='submit' value='Save'/>
+        </form>
+    </div>
+</body>
+<script type="text/javascript" src='/static/script.js'></script>
+</html>

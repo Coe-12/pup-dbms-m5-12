@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+</head>
+<body>
+<div class='main'>
+    <h1>Hello Module 4</h1>
+    <ul class="welcome"><h4>Welcome, {{user.nickname()}}</h4> </ul>
+    <ul class="logout"><a href="{{ url|safe }}"> <h4>{{ url_linktext }}</h4> </a></ul>
+    <div class='form-section'>
+        <form id='formThesis'class='create-form'>
+            <label> Year
+                <select name='year' form='formThesis'>
+                    <option value="2011">2011</option>
+                    <option value="2012">2012</option>
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                </select>
+            </label>
+            <input type='text' name='thesisTitle' placeholder='Title' required/>
+            <textarea type='text 'name='abstract' rows="10" cols="54" placeholder='Abstract' required></textarea>
+            <input type='text' name='adviser' placeholder='Adviser' required/>
+            <label> Section
+                <select name='section' form='formThesis'>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </label>
+            <input type='submit' value='Create Thesis'/>
+        </form>
+    </div>
+    <div class='list-section'>
+        <ul class='thesis-list'></ul>
+        <!-- your list here -->
+    </div>
+</div>
+
+</body>
+
+    <script type="text/javascript" src='/static/script.js'></script>
+
+</html>
