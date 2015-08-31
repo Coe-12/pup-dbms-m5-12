@@ -12,8 +12,8 @@ $(function(){
 		$.post(thesis_create_api, thesis, function(response){
 			// read response from server
 			if (response.status = 'OK') {
-				var thesis_list = response.data.year + ' ' + response.data.thesisTitle + ' - by ' + response.data.userName;
-				$('.thesis-list').prepend('<li>' + thesis_list + '<a href=\"/thesis/delete/'+response.data.id+'\"><button type=\"submit\">DELETE</button></a>'+ '<a href=\"/thesis/edit/'+thesis.id+'\"><button type=\"submit\">EDIT</button></a>')
+				var thesis_list = response.data.year + ' ' + response.data.thesisTitle + ' - by ' + response.data.first_name + ' ' + response.data.last_name;
+				$('.thesis-list').prepend('<li>' + thesis_list + '<br><a href=\"/thesis/delete/'+response.data.id+'\"><button type=\"submit\">DELETE</button></a>'+ '<a href=\"/thesis/edit/'+response.data.id+'\"><button type=\"submit\">EDIT</button></a>')
 				$('input:text').val('');
 				$('textarea[name=abstract]').val('');
 				$('select[name=year]').val('2011');
@@ -51,7 +51,7 @@ $(function(){
 		$.get(thesis_list_api, {} , function(response) {
 			console.log('.thesis-list', response)
 			response.data.forEach(function(thesis){
-				var thesis_list = thesis.year + ' ' + thesis.thesisTitle + ' - by ' + thesis.userName;
+				var thesis_list = thesis.year + ' ' + thesis.thesisTitle + ' - by ' + thesis.first_name + ' ' + thesis.last_name;
 				$('.thesis-list').append('<li>' + thesis_list + '<br><a href=\"/thesis/delete/'+thesis.id+'\"><button type=\"submit\">DELETE</button></a>'+ '<a href=\"/thesis/edit/'+thesis.id+'\"><button type=\"submit\">EDIT</button></a>' + '</li>')
 			});
 		});
@@ -66,7 +66,8 @@ $(function(){
 		// });
 
 	}
-	loadThesis();
+	
     $('.create-form').submit(onFormSubmit);
     $('.register-form').submit(onRegister);
+    loadThesis();
 });

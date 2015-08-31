@@ -32,10 +32,6 @@ class Thesis(ndb.Model):
     date = ndb.DateTimeProperty(auto_now_add=True)
     userName = ndb.StringProperty(indexed=False)
     userId = ndb.StringProperty(indexed=False)
-    #email = ndb.StringProperty()
-    #first_name = ndb.StringProperty()
-    #last_name = ndb.StringProperty()
-    #created_by = ndb.keyProperty()
 
 class User(ndb.Model):
     email = ndb.StringProperty(indexed=True)
@@ -51,6 +47,8 @@ class CreateThesis(webapp2.RequestHandler):
         thesis_list = []
 
         for t in thesis:
+            creatorId = t.userId
+            created_by = ndb.Key('User', creatorId)
             thesis_list.append({
                     'year' : t.year,
                     'thesisTitle' : t.thesisTitle,
@@ -58,7 +56,9 @@ class CreateThesis(webapp2.RequestHandler):
                     'adviser' : t.adviser,
                     'section' : t.section,
                     'id' : t.key.id(),
-                    'userName' : t.userName
+                    'userName' : t.userName,
+                    'first_name' : created_by.get().first_name,
+                    'last_name' : created_by.get().last_name
                 })
         #return list to client
         response = {
@@ -80,6 +80,9 @@ class CreateThesis(webapp2.RequestHandler):
         t.userId = user.user_id()
         t.put()
 
+        creatorId = t.userId
+        created_by = ndb.Key('User', creatorId)
+
         self.response.headers['Content-Type'] = 'application/json'
         response = {
             'result' : 'OK',
@@ -90,7 +93,9 @@ class CreateThesis(webapp2.RequestHandler):
                 'adviser' : t.adviser,
                 'section' : t.section,
                 'id' : t.key.id(),
-                'userName' : t.userName
+                'userName' : t.userName,
+                'first_name' : created_by.get().first_name,
+                'last_name' : created_by.get().last_name
             }
         }
         self.response.out.write(json.dumps(response))
@@ -174,26 +179,15 @@ class register(webapp2.RequestHandler):
         user =  User(id=loggedin_user.user_id(), email=loggedin_user.email(), first_name=self.request.get('first_name'), last_name=self.request.get('last_name'), phone_number=self.request.get('phone_number'))
         user.put()
 
-        # self.response.headers['Content-Type'] = 'application/json'
-        # response = {
-        #     'result' : 'OK',
-        #     'data': {
-        #         'first_name' : user.first_name
-        #     }
-        # }
-
-        # self.response.out.write(json.dumps(response))
-        # self.redirect('/')
-
 class editThesis(webapp2.RequestHandler):
-    def get(self,thesisId):
-        s = Thesis.get_by_id(int(thesisId))
+    def get(self, thesisId):
+        thesis = Thesis.get_by_id(int(thesisId))
         user = users.get_current_user()
         url = users.create_logout_url(self.request.uri)
         template_value = {
-            'thesis': s,
-            'user': user,
-            'url': url,
+            'thesis' : thesis,
+            'user' : user,
+            'url' : url
         }
         template = JINJA_ENVIRONMENT.get_template('edit.html')
         self.response.write(template.render(template_value))
